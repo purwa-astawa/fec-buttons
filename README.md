@@ -8,7 +8,8 @@ scss version of purecss button component https://github.com/yui/pure
 Usage :
 
 
-`
+```scss
+
 .your-button-class {
   @include make-fec-button($color, $background, $color-opacity, $background-opacity, $border:$button-border-default, $border-radius, $padding);
 
@@ -16,4 +17,4 @@ Usage :
    @include make-fec-button-size(lg);
 }
 
-`
+```
