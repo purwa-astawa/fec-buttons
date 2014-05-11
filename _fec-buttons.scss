@@ -1,0 +1,106 @@
+// button base mixins 
+@mixin make-fec-button($color, $background, $color-opacity:1, $background-opacity:1, $border:$button-border-default, $border-radius:$button-border-radius-default, $padding:$button-padding-default){
+   
+  //convert color
+  $color-rgba : rgba($color, $color-opacity);
+  $background-rgba: rgba($background, $background-opacity);
+
+  // for hover, and active state
+  $background-dark: rgba(darken($background, 10%), $background-opacity / 2);
+  $background-darker: rgba(darken($background, 15%), $background-opacity / 2);
+  // Structure 
+    display: inline-block;
+    *display: inline; //IE 6/7
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  
+    //font-size: 100%;
+    *font-size: 90%; //IE 6/7 - To reduce IE's oversized button text
+    *overflow: visible; //IE 6/7 - Because of IE's overly large left/right padding on buttons
+    padding: $padding;
+    color: $color; //rgba not supported (IE 8) 
+    color: $color-rgba; // rgba supported 
+    *color: $color; // IE 6 & 7 
+    border: $border;
+   
+    @if $background-opacity != 1 {
+       background-color: $background-rgba;
+    }@else{
+       background-color: $background;
+    }
+   
+    text-decoration: none;
+    border-radius: $border-radius;
+    -webkit-font-smoothing: antialiased;
+    //Transitions
+    -webkit-transition: 0.1s linear -webkit-box-shadow;
+    -moz-transition: 0.1s linear -moz-box-shadow;
+    -ms-transition: 0.1s linear box-shadow;
+    -o-transition: 0.1s linear box-shadow;
+    transition: 0.1s linear box-shadow;
+  
+  // Firefox: Get rid of the inner focus border
+   &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+   }
+  
+  &:hover, &:focus {
+    @if lightness($background) >= lightness($color) and $background-opacity == 0 and $background != #FFFFFF{
+       color:lighten($background, 50%);
+     }@elseif $background == #FFFFFF  and $background-opacity == 0{
+       color:darken($background, 50%);
+     } 
+    @else{
+        color:lighten($background, 50%);
+     }
+   @if $background-opacity == 0{
+    background-color: $background;
+     -webkit-transition: all .25s linear;
+     -moz-transition: all .25s linear;
+      -ms-transition: all .25s linear;
+       -o-transition: all .25s linear;
+          transition: all .25s linear;
+    
+   }@else {
+     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{ie-hex-str($background-dark)}, endColorstr=#{ie-hex-str($background-darker)}, GradientType=0);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, $background-dark), to($background-darker));
+    background-image: -webkit-linear-gradient(transparent, $background-dark 40%, $background-darker);
+    background-image: -moz-linear-gradient(top, $background-dark 0%, $background-darker);
+    background-image: -ms-linear-gradient(transparent, $background-dark 40%, $background-darker);
+    background-image: -o-linear-gradient(transparent, $background-dark 40%, $background-darker);
+    background-image: linear-gradient(transparent, $background-dark 40%, $background-darker);
+   }
+   
+  } 
+  &:focus {
+     outline: 0;
+  }
+  &:active {
+    box-shadow: 0 0 0 1px rgba(darken($background, 20%), $background-opacity / 4) inset, 0 0 6px rgba(darken($background, 20%), $background-opacity / 2) inset;
+  }
+  
+}
+//sizing
+@mixin make-fec-button-size($size){
+  @if $size == xs {
+     font-size: 70%;
+  } @else if $size == sm {
+     font-size: 85%;
+  } @else if $size == lg {
+    font-size: 110%;
+  } @else if $size == xl {
+     font-size: 125%;
+  } @else {
+     font-size: 100%;
+  }
+}
